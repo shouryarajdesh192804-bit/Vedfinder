@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+
+Settings
+
+</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<div class="content">
+
+<h1>
+
+Settings
+
+</h1>
+
+<h2>
+
+Account
+
+</h2>
+
+<p>
+
+Username
+
+</p>
+
+<input
+type="text"
+value="{{ username }}"
+readonly>
+
+<h2>
+
+Appearance
+
+</h2>
+
+<button
+id="themeBtn">
+
+Toggle Dark Mode
+
+</button>
+
+<br><br>
+
+<a
+href="{{ url_for('dashboard') }}">
+
+← Back
+
+</a>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+
+</html>

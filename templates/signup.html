@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        VedFinder Sign Up
+    </title>
+
+    <link
+        rel="icon"
+        href="{{ url_for(
+            'static',
+            filename='images/favicon.png'
+        ) }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/login.css'
+        ) }}"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/logo.png'
+            ) }}"
+            class="logo"
+            alt="VedFinder"
+        >
+
+        <h1>
+            VedFinder
+        </h1>
+
+        <p>
+            Create your account
+        </p>
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                <div class="flash">
+
+                    {% for message in messages %}
+
+                        <p>
+                            {{ message }}
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form
+            action="{{ url_for('signup') }}"
+            method="POST"
+        >
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                autocomplete="username"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                autocomplete="email"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                autocomplete="new-password"
+                required
+            >
+
+            <input
+                type="password"
+                name="confirm"
+                id="confirm"
+                placeholder="Confirm Password"
+                autocomplete="new-password"
+                required
+            >
+
+            <button
+                type="submit"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div class="links">
+
+            <a
+                href="{{ url_for('login') }}"
+            >
+                Already have an account?
+            </a>
+
+            <br>
+            <br>
+
+            <a
+                href="{{ url_for('home') }}"
+            >
+                Back to Search
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const form =
+    document.querySelector("form");
+
+if (form) {
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            const password =
+                document.getElementById(
+                    "password"
+                ).value;
+
+            const confirm =
+                document.getElementById(
+                    "confirm"
+                ).value;
+
+            if (
+                password !== confirm
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Passwords do not match."
+                );
+            }
+        }
+    );
+}
+
+</script>
+
+</body>
+
+</html>

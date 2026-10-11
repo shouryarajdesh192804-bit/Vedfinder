@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: vedfinder
+    runtime: python
+    plan: free
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: gunicorn app:app
+
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+
+      - key: YOUTUBE_API_KEY
+        sync: false
+
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+
+      - key: EMAIL_USER
+        sync: false
+
+      - key: EMAIL_PASSWORD
+        sync: false

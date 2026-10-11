@@ -1,0 +1,12 @@
+Flask
+requests
+beautifulsoup4
+Werkzeug
+wikipedia
+python-dotenv
+google-api-python-client
+gunicorn
+feedparser
+duckduckgo_search
+lxml
+python-dotenv

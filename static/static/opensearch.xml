@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OpenSearchDescription
+    xmlns="http://a9.com/-/spec/opensearch/1.1/"
+    xmlns:moz="http://www.mozilla.org/2006/browser/search/"
+>
+
+    <ShortName>VedFinder</ShortName>
+
+    <Description>
+        VedFinder - Search the Future - By Guru
+    </Description>
+
+    <InputEncoding>UTF-8</InputEncoding>
+
+    <Image
+        width="16"
+        height="16"
+        type="image/png"
+    >
+        /static/images/logo.png
+    </Image>
+
+    <Url
+        type="text/html"
+        method="get"
+        template="/search?q={searchTerms}"
+    />
+
+    <Url
+        type="application/x-suggestions+json"
+        method="get"
+        template="/suggest?q={searchTerms}"
+    />
+
+    <Url
+        type="application/opensearchdescription+xml"
+        rel="self"
+        template="/static/opensearch.xml"
+    />
+
+</OpenSearchDescription>

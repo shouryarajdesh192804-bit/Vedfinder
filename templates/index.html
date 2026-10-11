@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#07111f"
+    >
+
+    <meta
+        name="description"
+        content="VedFinder — Search the Future"
+    >
+
+    <title>VedFinder — Search the Future</title>
+
+    <link
+        rel="icon"
+        href="{{ url_for('static', filename='images/logo.png') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+{% if config.ADSENSE_CLIENT_ID %}
+<script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config.ADSENSE_CLIENT_ID }}"
+    crossorigin="anonymous">
+</script>
+{% endif %}
+{% if config.ADSENSE_CLIENT_ID %}
+<script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config.ADSENSE_CLIENT_ID }}"
+    crossorigin="anonymous"></script>
+{% endif %}
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <header class="topbar">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="brand"
+        >
+
+            <div class="brand-logo">
+
+                <img
+                    src="{{ url_for('static', filename='images/logo.png') }}"
+                    alt="VedFinder"
+                >
+
+            </div>
+
+            <div class="brand-copy">
+
+                <div class="brand-name">
+                    VedFinder
+                </div>
+
+                <div class="brand-by">
+                    By Guru
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <div class="topbar-right">
+
+            <div
+                id="modeIndicator"
+                class="mode-indicator"
+            >
+                <span class="mode-dot"></span>
+                Normal Mode
+            </div>
+
+
+            {% if session.get("username") %}
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="header-link"
+                >
+                    Dashboard
+                </a>
+
+                <a
+                    href="{{ url_for('logout') }}"
+                    class="header-link"
+                >
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('login') }}"
+                    class="header-link"
+                >
+                    Login
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- HERO -->
+    <!-- ================================================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-glow glow-one"></div>
+            <div class="hero-glow glow-two"></div>
+
+
+            <div class="hero-content">
+
+                <div class="hero-logo">
+
+                    <img
+                        src="{{ url_for('static', filename='images/logo.png') }}"
+                        alt="VedFinder logo"
+                    >
+
+                </div>
+
+
+                <p class="eyebrow">
+                    VEDFINDER • BY GURU
+                </p>
+
+
+                <h1>
+                    Search the
+                    <span>Future.</span>
+                </h1>
+
+
+                <p class="hero-subtitle">
+                    One intelligent search.
+                    Web, knowledge, images, videos and news
+                    in one futuristic experience.
+                </p>
+
+
+                <!-- ========================================= -->
+                <!-- SEARCH -->
+                <!-- ========================================= -->
+
+                <form
+                    id="searchForm"
+                    class="search-form"
+                    action="{{ url_for('search_route') }}"
+                    method="POST"
+                >
+
+                    <div class="search-box">
+
+                        <div class="search-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <circle
+                                    cx="11"
+                                    cy="11"
+                                    r="7"
+                                ></circle>
+
+                                <path
+                                    d="m16.5 16.5 5 5"
+                                ></path>
+                            </svg>
+
+                        </div>
+
+
+                        <input
+                            id="searchInput"
+                            name="query"
+                            type="search"
+                            value="{{ query or '' }}"
+                            placeholder="Search anything..."
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-label="Search VedFinder"
+                        >
+
+
+                        <button
+                            type="button"
+                            id="clearSearch"
+                            class="clear-search"
+                            aria-label="Clear search"
+                        >
+                            ×
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="search-submit"
+                        >
+                            <span>Search</span>
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M5 12h13"
+                                ></path>
+
+                                <path
+                                    d="m13 6 6 6-6 6"
+                                ></path>
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- MODES -->
+                    <!-- ===================================== -->
+
+                    <div class="mode-selector">
+
+                        <span class="mode-label">
+                            Search Mode
+                        </span>
+
+
+                        <div class="mode-buttons">
+
+                            <button
+                                type="button"
+                                id="normalModeButton"
+                                class="mode-button active"
+                                aria-pressed="true"
+                            >
+
+                                <span class="mode-button-icon">
+                                    ◈
+                                </span>
+
+                                Normal
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="goModeButton"
+                                class="mode-button"
+                                aria-pressed="false"
+                            >
+
+                                <span class="mode-button-icon">
+                                    ◉
+                                </span>
+
+                                Go Mode
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <input
+                        type="hidden"
+                        id="searchMode"
+                        name="mode"
+                        value="{{ mode or 'normal' }}"
+                    >
+
+                </form>
+
+
+                <div class="search-hint">
+                    Press <kbd>/</kbd> to focus search
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- RESULTS -->
+        <!-- ================================================= -->
+
+        {% if query %}
+
+        <section class="results-section">
+
+            <div class="results-header">
+
+                <div>
+
+                    <p class="results-eyebrow">
+                        SEARCH RESULTS
+                    </p>
+
+                    <h2>
+                        Results for
+                        <strong>"{{ query }}"</strong>
+                    </h2>
+
+                </div>
+
+
+                <div class="results-status">
+
+                    <span class="status-dot"></span>
+
+                    {% if mode == "go" %}
+                        Go Mode
+                    {% else %}
+                        Normal Mode
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- TABS -->
+            <!-- ============================================= -->
+
+            <nav
+                class="results-tabs"
+                aria-label="Search result categories"
+            >
+
+                <button
+                    type="button"
+                    class="result-tab active"
+                    data-tab="knowledge"
+                >
+                    Knowledge
+                </button>
+
+                <button
+                    type="button"
+                    class="result-tab"
+                    data-tab="web"
+                >
+                    Web
+                </button>
+
+                <button
+                    type="button"
+                    class="result-tab"
+                    data-tab="images"
+                >
+                    Images
+                </button>
+
+                <button
+                    type="button"
+                    class="result-tab"
+                    data-tab="videos"
+                >
+                    Videos
+                </button>
+
+                <button
+                    type="button"
+                    class="result-tab"
+                    data-tab="news"
+                >
+                    News
+                </button>
+
+                <button
+                    type="button"
+                    class="result-tab"
+                    data-tab="maps"
+                >
+                    Maps
+                </button>
+
+            </nav>
+
+
+            <!-- ============================================= -->
+            <!-- KNOWLEDGE -->
+            <!-- ============================================= -->
+
+            <div
+                class="tab-panel active"
+                data-panel="knowledge"
+            >
+
+                {% if knowledge %}
+
+                <article class="knowledge-card">
+
+                    <div class="knowledge-main">
+
+                        <div class="card-label">
+                            VEDFINDER KNOWLEDGE
+                        </div>
+
+
+                        <h3>
+                            {{ knowledge.get("title", "") }}
+                        </h3>
+
+
+                        <p>
+                            {{
+                                knowledge.get(
+                                    "summary",
+                                    knowledge.get(
+                                        "description",
+                                        ""
+                                    )
+                                )
+                            }}
+                        </p>
+
+
+                        {% if knowledge.get("url") %}
+
+                        <a
+                            href="{{ knowledge.get('url') }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="source-link"
+                        >
+                            Explore source
+                            <span>↗</span>
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if knowledge.get("image") %}
+
+                    <div class="knowledge-image">
+
+                        <img
+                            src="{{ knowledge.get('image') }}"
+                            alt="{{ knowledge.get('title', 'Knowledge') }}"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    {% endif %}
+
+                </article>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◇
+                    </div>
+
+                    <h3>
+                        No knowledge result
+                    </h3>
+
+                    <p>
+                        We couldn't find a knowledge summary
+                        for this search.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- WEB -->
+            <!-- ============================================= -->
+
+            <div
+                class="tab-panel"
+                data-panel="web"
+                hidden
+            >
+
+                {% if websites %}
+
+                <div class="web-results">
+
+                    {% for result in websites %}
+
+                    <article class="web-result-card">
+
+                        <div class="result-number">
+                            {{ loop.index }}
+                        </div>
+
+
+                        <div class="web-result-content">
+
+                            <a
+                                href="{{ result.get('url', '#') }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="web-result-title"
+                            >
+                                {{ result.get('title', 'Untitled result') }}
+                            </a>
+
+
+                            <div class="web-result-url">
+                                {{ result.get('url', '') }}
+                            </div>
+
+
+                            <p>
+                                {{
+                                    result.get(
+                                        'description',
+                                        result.get(
+                                            'snippet',
+                                            ''
+                                        )
+                                    )
+                                }}
+                            </p>
+
+
+                            <span class="result-source">
+                                {{ result.get('source', 'Web') }}
+                            </span>
+
+                        </div>
+
+                    </article>
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◇
+                    </div>
+
+                    <h3>
+                        No web results
+                    </h3>
+
+                    <p>
+                        No web results were returned.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- IMAGES -->
+            <!-- ============================================= -->
+
+            <div
+                class="tab-panel"
+                data-panel="images"
+                hidden
+            >
+
+                {% if images %}
+
+                <div class="image-grid">
+
+                    {% for image in images %}
+
+                    {% set image_url =
+                        image.get(
+                            'thumbnail',
+                            image.get(
+                                'image',
+                                ''
+                            )
+                        )
+                    %}
+
+                    {% if image_url %}
+
+                    <a
+                        href="{{ image.get('url', image_url) }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="image-card"
+                    >
+
+                        <img
+                            src="{{ image_url }}"
+                            alt="{{ query }}"
+                            loading="lazy"
+                        >
+
+                    </a>
+
+                    {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◇
+                    </div>
+
+                    <h3>
+                        No images found
+                    </h3>
+
+                    <p>
+                        Try another search to discover images.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- VIDEOS -->
+            <!-- ============================================= -->
+
+            <div
+                class="tab-panel"
+                data-panel="videos"
+                hidden
+            >
+
+                {% if videos %}
+
+                <div class="video-grid">
+
+                    {% for video in videos %}
+
+                    <article class="video-card">
+
+                        {% if video.get('thumbnail') %}
+
+                        <img
+                            src="{{ video.get('thumbnail') }}"
+                            alt="{{ video.get('title', 'Video') }}"
+                            loading="lazy"
+                        >
+
+                        {% endif %}
+
+
+                        <div class="video-content">
+
+                            <h3>
+                                {{ video.get('title', 'Video') }}
+                            </h3>
+
+                            <p>
+                                {{
+                                    video.get(
+                                        'channel',
+                                        video.get(
+                                            'source',
+                                            ''
+                                        )
+                                    )
+                                }}
+                            </p>
+
+
+                            {% if video.get('url') %}
+
+                            <a
+                                href="{{ video.get('url') }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="watch-button"
+                            >
+                                Watch video
+                                <span>↗</span>
+                            </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </article>
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ▶
+                    </div>
+
+                    <h3>
+                        No videos available
+                    </h3>
+
+                    <p>
+                        Video results will appear here when available.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- NEWS -->
+            <!-- ============================================= -->
+
+            <div
+                class="tab-panel"
+                data-panel="news"
+                hidden
+            >
+
+                {% if news %}
+
+                <div class="news-list">
+
+                    {% for article in news %}
+
+                    <article class="news-card">
+
+                        <div class="news-content">
+
+                            <span class="news-source">
+                                {{ article.get('source', 'Google News') }}
+                            </span>
+
+
+                            <h3>
+
+                                <a
+                                    href="{{ article.get('url', article.get('link', '#')) }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {{ article.get('title', 'News') }}
+                                </a>
+
+                            </h3>
+
+
+                            {% if article.get('description') %}
+
+                            <p>
+                                {{ article.get('description') }}
+                            </p>
+
+                            {% endif %}
+
+
+                            {% if article.get('published') %}
+
+                            <time>
+                                {{ article.get('published') }}
+                            </time>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <a
+                            href="{{ article.get('url', article.get('link', '#')) }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="news-arrow"
+                        >
+                            ↗
+                        </a>
+
+                    </article>
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◇
+                    </div>
+
+                    <h3>
+                        No news found
+                    </h3>
+
+                    <p>
+                        No current news results were returned.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- MAPS -->
+            <!-- ============================================= -->
+
+            <div
+                class="tab-panel"
+                data-panel="maps"
+                hidden
+            >
+
+                {% if maps %}
+
+                <div class="maps-card">
+
+                    <div class="card-label">
+                        MAPS
+                    </div>
+
+                    {% if maps.get('url') %}
+
+                    <a
+                        href="{{ maps.get('url') }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="maps-button"
+                    >
+                        Open in Maps ↗
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◎
+                    </div>
+
+                    <h3>
+                        No map result
+                    </h3>
+
+                    <p>
+                        Location results will appear here.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    {% if config.ADSENSE_CLIENT_ID and config.ADSENSE_SLOT_ID %}
+
+<div class="vedfinder-adsense-wrapper">
+
+    <ins
+        class="adsbygoogle vedfinder-adsense-banner"
+        style="display:block"
+        data-ad-client="{{ config.ADSENSE_CLIENT_ID }}"
+        data-ad-slot="{{ config.ADSENSE_SLOT_ID }}"
+        data-ad-format="auto"
+        data-full-width-responsive="true">
+    </ins>
+
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</div>
+
+{% endif %}
+
+    <footer class="footer">
+
+        <div class="footer-brand">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                alt="VedFinder"
+            >
+
+            <div>
+                <strong>VedFinder</strong>
+                <span>By Guru</span>
+            </div>
+
+        </div>
+
+
+        <p>
+            Search the Future.
+        </p>
+
+
+        <span>
+            © 2026 VedFinder
+        </span>
+
+    </footer>
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+    defer
+></script>
+
+</body>
+</html>
